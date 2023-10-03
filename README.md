@@ -15,34 +15,33 @@
       <h4 style="text-align:center;">Demonstration Video</h4>
   </div>
 
-
 ## INTRODUTION
 
 Hi! Before introduction, let us introduce our little boy first! This is our Pi WALL-E robot! This robot is a self-balanced car, and it only has two wheels! Its eye consists of a ginbal with a camera and an Android app connected to our phone. We could see the world through WALL-E’s eye!
 
-## MOTIVATION AND INTRODUCTION 
+## MOTIVATION AND INTRODUCTION
 
-In 5725 lab3, our team finish a four-wheel car and control the car to move forward and backward and, we change the speed of the car to move faster and slower. Then an intriguing notion that comes to our mind is to make a two-wheel car to balance itself! Thus, in this final project, we choose to implement our self-balanced car ‘WALL-E’. 
+In 5725 lab3, our team finish a four-wheel car and control the car to move forward and backward and, we change the speed of the car to move faster and slower. Then an intriguing notion that comes to our mind is to make a two-wheel car to balance itself! Thus, in this final project, we choose to implement our self-balanced car ‘WALL-E’.
 
 The reason why the robot gets its name ‘WALL-E’ is that we set a gimbal with a camera on the top of this car. Its looks just like the ‘WALL-E’ robot. We set an Android app connected to the phone to control the gimbal and rotate the camera, thus we can see the world in different directions from WALL-E’s eye. The Robot WALL-E’s method of balancing and moving stably by reading the moving acceleration to compute corresponding angles. The change of angle will decide the motor speed like when the robot is moving forward, and the angle change will increase the forward speed to balance WALL-E. More details, principles, and results of WALL-E to control its self-balance and see all directions of the world will be illustrated in the following sections. Now, let's go!
 
 ## FIRST YOU NEED TO KNOW
 
-**Components Need:** 
+**Components Need:**
 
-- Raspberry Pi *1
-- MPU6050 *1
-- 12V motors with encoder *2
-- TB6612 *1 (Suggestion: Prepare more than 1, it is easily to burn )*
-- Pi Camera  * 1
-- Gimbal (2 Servos that help Camera to move ) *1
+- Raspberry Pi \*1
+- MPU6050 \*1
+- 12V motors with encoder \*2
+- TB6612 _1 (Suggestion: Prepare more than 1, it is easily to burn )_
+- Pi Camera \* 1
+- Gimbal (2 Servos that help Camera to move ) \*1
 - Bread board and some pin-hole wires
 
 The balanced robot is a really complicated system and you need much time and patience! Good Luck
 
-By the way, feel **Free** to contact us! Our email are yp284@cornell.edu and yl2237@cornell.edu. 
+By the way, feel **Free** to contact us! Our email are yp284@cornell.edu and yl2237@cornell.edu.
 
-## HOW TO START 
+## HOW TO START
 
 We will display the code step by step to show how it works.
 
@@ -52,7 +51,7 @@ You need to connect the Raspberry Pi to all the components like the picture show
 
 ### Raspberry Pi code
 
-This is our Self-Balanced Robot core control program.  We write two version of control program in **C** and **Python**.
+This is our Self-Balanced Robot core control program. We write two version of control program in **C** and **Python**.
 
 The C code works successfully to balanced robot so I will follow the C code to tell you how to start.
 
@@ -60,7 +59,7 @@ We didn't success with the python code but we also put our python code on the Gi
 
 #### C code
 
-##### Step 1: Install **bcm2835**  and **libi2c-dev**
+##### Step 1: Install **bcm2835** and **libi2c-dev**
 
 We provide a bcm2835 library in the Library folder and you can also download it from official website
 
@@ -114,7 +113,7 @@ After compiling, we need to load our module by the following command.
 sudo insmod encoder.ko
 ```
 
-And we can use the command to make sure the encoder module is successfully loaded 
+And we can use the command to make sure the encoder module is successfully loaded
 
 ```shell
 sudo ismod
@@ -134,7 +133,7 @@ sudo make
 sudo ./main
 ```
 
-##### Step4: Start Pi camera 
+##### Step4: Start Pi camera
 
 You can see the link below to know how to start pi camera.
 
@@ -143,7 +142,7 @@ You can see the link below to know how to start pi camera.
 python3 main.py
 ```
 
-##### Step5: Start RPi as TCP server 
+##### Step5: Start RPi as TCP server
 
 ```shell
 #Make sure you are now in ../Raspberry Pi Code/Python/RPi program
@@ -175,7 +174,7 @@ The Camera Module 2 can be used to take high-definition video, as well as stills
 
 This Android can simply seen as two parts.
 
- One part is read video data from the Pi Camera.
+One part is read video data from the Pi Camera.
 
 ```java
         //----------------------------------------------------
@@ -193,7 +192,7 @@ This Android can simply seen as two parts.
         webView.setOverScrollMode(WebView.OVER_SCROLL_NEVER);
 ```
 
-Android app start a thread and then set up a socket connection with RPi. 
+Android app start a thread and then set up a socket connection with RPi.
 
 ```java
 class ClientThread implements Runnable {
@@ -232,7 +231,7 @@ class ClientThread implements Runnable {
 }
 ```
 
-Like the following command, after connected, socket will send the string to RPi server. 
+Like the following command, after connected, socket will send the string to RPi server.
 
 ```java
 new Thread(new ClientThread("Move1")).start();
@@ -248,18 +247,18 @@ WALL-E's body is composed by MPU6050, TB6612, 12V Motors with encoders, and brea
 
 TB6612 will set as logical high and logical low and control the direction of left motor. As shown in the table:
 
-| GPIO    | Output     | Control                        |
-| ------- | ---------- | ------------------------------ |
-| 5,  6   | HIGH,  LOW | Left  Motor Clockwise          |
-| 5,  6   | LOW,  HIGH | Left  Motor Counter-Clockwise  |
-| 13,  26 | HIGH,  LOW | Right  Motor Clockwise         |
-| 13,  26 | LOW,  HIGH | Right  Motor Counter-Clockwise |
+| GPIO   | Output    | Control                       |
+| ------ | --------- | ----------------------------- |
+| 5, 6   | HIGH, LOW | Left Motor Clockwise          |
+| 5, 6   | LOW, HIGH | Left Motor Counter-Clockwise  |
+| 13, 26 | HIGH, LOW | Right Motor Clockwise         |
+| 13, 26 | LOW, HIGH | Right Motor Counter-Clockwise |
 
 Different input to TB6612 can control different direction of motors.
 
 #### MPU6050
 
-In this section, the key sensor MPU6050 will be illustrated Fig. 1. To keep our two-wheel balanced car ‘WALL-E’ upright and moving forward and backward smoothly, the first thing that needs to obtain is the attitude angle of the car and the change of angle will decide the motor speed. Sensor MPU6050 is a three-direction sensor used to read all acceleration of x, y, and z directions to compute the corresponding moving angle of x, y, and z directions. This computing method will be explained later. Through the angle, the attitude of the car relative to the ground will be obtained to make corresponding control adjustments. For example, when the robot is moving forward, the angle will be computed, and the forward speed will be increased to balance the car. 
+In this section, the key sensor MPU6050 will be illustrated Fig. 1. To keep our two-wheel balanced car ‘WALL-E’ upright and moving forward and backward smoothly, the first thing that needs to obtain is the attitude angle of the car and the change of angle will decide the motor speed. Sensor MPU6050 is a three-direction sensor used to read all acceleration of x, y, and z directions to compute the corresponding moving angle of x, y, and z directions. This computing method will be explained later. Through the angle, the attitude of the car relative to the ground will be obtained to make corresponding control adjustments. For example, when the robot is moving forward, the angle will be computed, and the forward speed will be increased to balance the car.
 
 <img src="pics/MPU6050.png" alt="MPU6050" style="zoom:50%;" />
 
@@ -280,7 +279,7 @@ These functions of i2c_write, i2c_read, delay_ms, get_ms, reg_int_cb, labs, fabs
 
 ![image-20211218220614253](pics/Basic functions of MPU6050 control.png)
 
-Then functions of i2cwrite, i2cRead, and delay_ms are implemented by the following codes. 
+Then functions of i2cwrite, i2cRead, and delay_ms are implemented by the following codes.
 
 ![image-20211218220627697](pics/Functions of i2cwrite, i2cRead and delay_ms.png)
 
@@ -304,19 +303,19 @@ Then the roll and pitch angles will be computed by the following code. Then the 
 
 ```C
 void Read_DMP(void)
-{   
+{
       unsigned long sensor_timestamp;
         unsigned char more;
         long quat[4];
 
-                dmp_read_fifo(gyro, accel, quat, &sensor_timestamp, &sensors, &more);       
+                dmp_read_fifo(gyro, accel, quat, &sensor_timestamp, &sensors, &more);
                 if (sensors & INV_WXYZ_QUAT )
-                {    
+                {
                      q0=quat[0] / q30;
                      q1=quat[1] / q30;
                      q2=quat[2] / q30;
                      q3=quat[3] / q30;
-                     Pitch = asin(-2 * q1 * q3 + 2 * q0* q2)* 57.3;     
+                     Pitch = asin(-2 * q1 * q3 + 2 * q0* q2)* 57.3;
                      Roll = atan2(2 * q2 * q3 + 2 * q0 * q1, -2 * q1 * q1 - 2 * q2* q2 + 1)* 57.3; // roll
                 }
 
@@ -329,7 +328,7 @@ How to get the correct speed of our cute ‘WALL-E’ robot? The position angle 
 
 ![image-20211218231451014](pics/encoder.png)
 
-There are two motors to control the speed and each motor has a hall encoder then are connected to RPI gpio12, gpio16, gpio20, and gpio21. 
+There are two motors to control the speed and each motor has a hall encoder then are connected to RPI gpio12, gpio16, gpio20, and gpio21.
 
 ![image-20211218231558423](pics/Connection of encoder and RPI GPIOs.png)
 
@@ -347,7 +346,7 @@ In the init function, mode requirement and configuration are set to use GPIO. Fu
 
 ![image-20211218232232950](pics/Configuration of interrupts.png)
 
- the function REQ_interrupt is used to configure the interrupt callback function, trigger mode, name, and input parameters. The interrupt function of Linux is divided into two parts: the top half and the bottom half. The top half is the real callback function. The execution is in the interrupt context and generally could not be interrupted to execute the part that must be done. The bottom half is triggered by the top half, and other less urgent matters that interrupt callbacks are executed. The programs in the bottom half will participate in the kernel scheduling and could be interrupted.
+the function REQ_interrupt is used to configure the interrupt callback function, trigger mode, name, and input parameters. The interrupt function of Linux is divided into two parts: the top half and the bottom half. The top half is the real callback function. The execution is in the interrupt context and generally could not be interrupted to execute the part that must be done. The bottom half is triggered by the top half, and other less urgent matters that interrupt callbacks are executed. The programs in the bottom half will participate in the kernel scheduling and could be interrupted.
 
 In our RPI, 4-time frequency speed measurement is used and if the rotation is forward, the count of the encoder will be increased by 1, and if the rotation is reversed, the count of the encoder will be decreased by 1, as shown in pciture
 
@@ -357,7 +356,7 @@ Because the count of the encoder is proportional to the motor speed, it is no ne
 
 ![image-20211218232544884](pics/Speed loop of PID controller.png)
 
-## TESTS AND RESULTS 
+## TESTS AND RESULTS
 
 ### Android APP
 
@@ -367,7 +366,7 @@ The GUI of the Android app is shown in Figure. The buttons in the lower right co
 
 ### WALL-E’s balance
 
- As shown in codes in the last sections and figures, firstly the robot could keep balanced before running the ‘main.c’ code. After running balanced code, the robot could keep upright. When we push it forward, it will read the forward angle and increase its forward speed to keep balance. 
+As shown in codes in the last sections and figures, firstly the robot could keep balanced before running the ‘main.c’ code. After running balanced code, the robot could keep upright. When we push it forward, it will read the forward angle and increase its forward speed to keep balance.
 
 As shown in the left column of the figure below, m1 and m2 are the speed of the left and right motors respectively and gyro is an acceleration coefficient. When the angle increases from 1.96 degrees to 2.52 degrees, the gyro will increase from 30 to 52 and the motor speed will increase from 422 to 472 to avoid robot ‘WALL-E’ falling. As shown in the right column of the figure below, the measured angle of the robot is 6 degrees, so it has an initial motor speed of 247 to avoid falling. With the decreasing of the angle from 6.13 degrees to 5.95 degrees, the speed of motors is decreased from 248 to 229.
 
@@ -377,9 +376,9 @@ To avoid the speed increasing extremely fast and burning out the servo, a safe s
 
 ![Safety shutdown of the robot](pics/Safety shutdown of the robot.png)
 
-### Performance of Program  
+### Performance of Program
 
-As the result shown below, this program reads **57 times/second** of angel. Then set PWM signal to TB6612 **29 times/second**. It is really fast than python code so we successfully to let the  Pi WALL-E self balanced. 
+As the result shown below, this program reads **57 times/second** of angel. Then set PWM signal to TB6612 **29 times/second**. It is really fast than python code so we successfully to let the Pi WALL-E self balanced.
 
 ```shell
 pi@raspberrypi:~/workspace/pi-robot/Robot Code $ sudo ./main
@@ -439,8 +438,6 @@ Pi WALL-E only has two wheels but it can self balanced very well! We can also se
       </div>
   </div>
 
-
-
 <hr>
   <div style="font-size:18px">
       <h2>Parts List</h2>
@@ -467,7 +464,7 @@ Pi WALL-E only has two wheels but it can self balanced very well! We can also se
           <h2>Code Appendix</h2>
   </div>
 We put all our CODEs in the github! See the linke below.
-
+https://github.com/Lenalu98/ECE-5725-Self-Balanced-Robot
 https://github.com/Typo90/ECE5725-Self-Balanced-Robot
 
 <hr>
@@ -485,4 +482,3 @@ https://github.com/Typo90/ECE5725-Self-Balanced-Robot
         Thank Jiao Yang's motors and TB6612.<br />
         Thank Kuan Lu's access of maker lab and encouragement for us.<br />
 		Thank Hanzhong Liang's help to PID paremters adjustment.<br/>
-
